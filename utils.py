@@ -19,3 +19,17 @@ def download_artifact(artifact_files, crucible_url, challenge, crucible_api_key)
             print(f"{artifact} was successfully downloaded to data folder")
         else:
             print(f"Failed to download {artifact}")
+
+
+
+def submit_flag(challenge_url, crucible_api_key, flag):
+    # Ensure flag is wrapped in curly brackets
+    if not (flag.startswith('{') and flag.endswith('}')):
+        flag = f"{{{flag}}}"  # Add curly brackets if they're missing
+    
+    response = requests.post(
+        f"{challenge_url}/score",
+        headers={"X-API-Key": crucible_api_key},
+        json={"data": flag},
+    )
+    return response.json()
